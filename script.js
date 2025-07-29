@@ -12,7 +12,7 @@ if (!user || !user.id) {
 const userId = user.id;
 console.log("✅ Telegram user ID:", userId);
 
-const apiUrl = 'http://127.0.0.1:8000/habits';
+const apiUrl = 'https://habitflow-backend-0k9bpqzmj0h6e208.up.railway.app/habits';
 
 document.addEventListener('DOMContentLoaded', loadHabits);
 
