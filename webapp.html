@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HabitFlow Assistant</title>
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>👋 Привіт!</h1>
-    <p>Це тестовий інтерфейс HabitFlow Assistant.</p>
+    <p>Це інтерфейс HabitFlow Assistant, запущений як Telegram Mini App.</p>
 
     <div class="form">
       <input type="text" id="habitInput" placeholder="Введи назву звички" />
@@ -19,6 +22,7 @@
     <ul id="habitList"></ul>
   </div>
 
+  <!-- Підключення основного JS -->
   <script src="script.js"></script>
 </body>
 </html>

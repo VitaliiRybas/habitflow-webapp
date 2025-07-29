@@ -1,24 +1,22 @@
-const apiUrl = 'http://127.0.0.1:8000/habits';
+// Підключення Telegram WebApp SDK
+const tg = window.Telegram.WebApp;
+tg.ready(); // сигналізує Telegram, що все готово
 
-const urlParams = new URLSearchParams(window.location.search);
-const userId = parseInt(urlParams.get("user_id"));
+const user = tg.initDataUnsafe?.user;
 
-if (!userId || isNaN(userId)) {
+if (!user || !user.id) {
   alert("❌ Користувач не авторизований через Telegram");
   window.location.href = "/"; // повертаємо на головну
 }
 
-console.log("userId =", userId);
+const userId = user.id;
+console.log("✅ Telegram user ID:", userId);
 
+const apiUrl = 'http://127.0.0.1:8000/habits';
 
 document.addEventListener('DOMContentLoaded', loadHabits);
 
 async function loadHabits() {
-  if (!userId || isNaN(userId)) {
-    alert("❌ user_id не передано або некоректний.");
-    return;
-  }
-
   const response = await fetch(`${apiUrl}?user_id=${userId}`);
   const habits = await response.json();
 
@@ -36,7 +34,7 @@ async function addHabit() {
   const title = input.value.trim();
   if (!title) return;
 
-  const response = await fetch(apiUrl, {
+  await fetch(apiUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title, user_id: userId })
