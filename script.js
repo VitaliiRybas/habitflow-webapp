@@ -22,9 +22,15 @@ document.addEventListener('DOMContentLoaded', loadHabits);
 async function loadHabits() {
   try {
     const response = await fetch(`${apiUrl}?user_id=${userId}`);
-    if (!response.ok) throw new Error(`Помилка ${response.status}`);
 
-    const habits = await response.json();
+    const text = await response.text();
+    console.log("📥 GET response text:", text);
+
+    if (!response.ok) {
+      throw new Error(`Помилка ${response.status}: ${text}`);
+    }
+
+    const habits = JSON.parse(text); // тепер ми точно знаємо, що парсимо
     const container = document.getElementById('habitList');
     container.innerHTML = '';
 
@@ -34,7 +40,7 @@ async function loadHabits() {
     });
   } catch (error) {
     console.error("❌ Помилка при завантаженні звичок:", error);
-    alert("Не вдалося завантажити звички 😢");
+    alert(`Не вдалося завантажити звички 😢\n${error.message}`);
   }
 }
 
@@ -46,23 +52,26 @@ async function addHabit() {
   const title = input.value.trim();
   if (!title) return;
 
+  const payload = { title, user_id: userId };
+  console.log("📤 Відправляємо:", payload);
+
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, user_id: userId })
+      headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+      body: JSON.stringify(payload)
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`Помилка ${response.status}: ${text}`);
-    }
+    const text = await response.text();
+    console.log("📥 Відповідь сервера:", text);
+
+    if (!response.ok) throw new Error(`Помилка ${response.status}: ${text}`);
 
     input.value = '';
     await loadHabits();
   } catch (error) {
     console.error("❌ Помилка при додаванні звички:", error);
-    alert("Не вдалося додати звичку 😢");
+    alert(`Не вдалося додати звичку 😢\n${error.message}`);
   }
 }
 
