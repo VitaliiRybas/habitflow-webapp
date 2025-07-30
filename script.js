@@ -1,4 +1,3 @@
-// Підключення Telegram WebApp SDK
 const tg = window.Telegram.WebApp;
 tg.ready();
 
@@ -16,9 +15,6 @@ const apiUrl = 'https://habitflow-backend-production.up.railway.app/habits';
 
 document.addEventListener('DOMContentLoaded', loadHabits);
 
-// ======================
-// Завантаження звичок
-// ======================
 async function loadHabits() {
   try {
     const response = await fetch(`${apiUrl}?user_id=${userId}`);
@@ -30,7 +26,7 @@ async function loadHabits() {
       throw new Error(`Помилка ${response.status}: ${text}`);
     }
 
-    const habits = JSON.parse(text); // тепер ми точно знаємо, що парсимо
+    const habits = JSON.parse(text); 
     const container = document.getElementById('habitList');
     container.innerHTML = '';
 
@@ -44,9 +40,6 @@ async function loadHabits() {
   }
 }
 
-// ======================
-// Додавання звички
-// ======================
 async function addHabit() {
   const input = document.getElementById('habitInput');
   const title = input.value.trim();
@@ -75,14 +68,11 @@ async function addHabit() {
   }
 }
 
-// ======================
-// Створення картки
-// ======================
 function createHabitCard(habit) {
   const card = document.createElement('div');
   card.className = 'habit-card';
 
-  const streakData = habit.streak || generateEmptyStreak();
+  const streakData = habit.streak_data || generateEmptyStreak();
   const weeksCount = habit.weeks_count || 0;
 
   card.innerHTML = `
@@ -121,7 +111,6 @@ function createHabitCard(habit) {
     streakContainer.appendChild(fire);
   }
 
-  // Довгий тап
   let longPressTimer;
   card.addEventListener('touchstart', () => {
     longPressTimer = setTimeout(() => openEditMenu(habit), 600);
@@ -134,9 +123,6 @@ function createHabitCard(habit) {
   return card;
 }
 
-// ======================
-// Допоміжні функції
-// ======================
 function escapeHtml(text) {
   return text.replace(/[&<>"']/g, m => ({
     '&': '&amp;',
@@ -153,7 +139,6 @@ function generateEmptyStreak() {
 
 async function markTodayDone(habitId) {
   console.log(`✅ Позначаємо звичку як виконану: ${habitId}`);
-  // TODO: реалізувати запит на бекенд
   await loadHabits();
 }
 
