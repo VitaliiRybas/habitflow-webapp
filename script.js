@@ -55,6 +55,9 @@ async function addHabit() {
 }
 
 function createHabitCard(habit) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'habit-card-wrapper';
+
   const card = document.createElement('div');
   card.className = 'habit-card';
   card.dataset.id = habit.id;
@@ -62,14 +65,6 @@ function createHabitCard(habit) {
   const title = document.createElement('div');
   title.className = 'habit-title';
   title.textContent = habit.title;
-
-  const buttonGroup = document.createElement('div');
-  buttonGroup.className = 'habit-actions';
-  buttonGroup.innerHTML = `
-    <button class="edit-btn">✏️</button>
-    <button class="delete-btn">🗑️</button>
-  `;
-  buttonGroup.style.display = 'none';
 
   const streak = habit.streak_data || Array(7).fill('none');
   const container = document.createElement('div');
@@ -92,9 +87,18 @@ function createHabitCard(habit) {
 
   card.appendChild(title);
   card.appendChild(container);
-  card.appendChild(buttonGroup);
 
-  // ===== Свайп логіка =====
+  const actions = document.createElement('div');
+  actions.className = 'habit-actions';
+  actions.innerHTML = `
+    <button class="edit-btn">Редагувати</button>
+    <button class="delete-btn">Видалити</button>
+  `;
+
+  wrapper.appendChild(card);
+  wrapper.appendChild(actions);
+
+  // Swipe logic
   let startX = 0;
   card.addEventListener('touchstart', e => {
     startX = e.touches[0].clientX;
@@ -103,17 +107,16 @@ function createHabitCard(habit) {
   card.addEventListener('touchend', e => {
     const diffX = e.changedTouches[0].clientX - startX;
     if (diffX < -30) {
-      buttonGroup.style.display = 'flex';
+      wrapper.classList.add('show-actions');
     } else if (diffX > 30) {
-      buttonGroup.style.display = 'none';
+      wrapper.classList.remove('show-actions');
     }
   });
 
-  // ===== Обробка кнопок =====
-  buttonGroup.querySelector('.delete-btn').onclick = () => deleteHabit(habit.id);
-  buttonGroup.querySelector('.edit-btn').onclick = () => editHabit(habit);
+  actions.querySelector('.edit-btn').addEventListener('click', () => editHabit(habit.id, habit.title));
+  actions.querySelector('.delete-btn').addEventListener('click', () => deleteHabit(habit.id));
 
-  return card;
+  return wrapper;
 }
 
 async function markTodayDone(habitId) {
@@ -132,28 +135,22 @@ async function markTodayDone(habitId) {
 async function deleteHabit(habitId) {
   if (!confirm("Видалити цю звичку?")) return;
   try {
-    await fetch(`${apiUrl}/${habitId}`, {
-      method: 'DELETE'
-    });
+    await fetch(`${apiUrl}/${habitId}`, { method: 'DELETE' });
     await loadHabits();
   } catch (err) {
     alert("Не вдалося видалити звичку");
   }
 }
 
-async function editHabit(habit) {
-  const newTitle = prompt("Редагувати звичку:", habit.title);
+async function editHabit(id, oldTitle) {
+  const newTitle = prompt("Редагувати звичку:", oldTitle);
   if (!newTitle || newTitle.trim() === '') return;
 
   try {
-    await fetch(`${apiUrl}/${habit.id}`, {
+    await fetch(`${apiUrl}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...habit,
-        title: newTitle.trim(),
-        user_id: userId
-      })
+      body: JSON.stringify({ title: newTitle.trim(), user_id: userId })
     });
     await loadHabits();
   } catch (err) {
