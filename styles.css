@@ -163,3 +163,33 @@ button.main-btn {
   );
   filter: drop-shadow(0 0 2px #f75e25);
 }
+
+.habit-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.habit-actions button {
+  background-color: #292929;
+  border: 1px solid #f8b500;
+  color: #f8b500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.habit-actions button:hover {
+  background-color: #f8b500;
+  color: black;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
