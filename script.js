@@ -9,7 +9,7 @@ if (!user?.id) {
 }
 
 const userId = user.id;
-const apiUrl = 'https://habitflow-backend-production.up.railway.app/habits';
+const apiUrl = 'https://habitflow-backend.onrender.com/habits';
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('addHabitBtn')?.addEventListener('click', addHabit);
