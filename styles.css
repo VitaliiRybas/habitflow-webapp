@@ -1,4 +1,3 @@
-/* ==== загальний стиль залишився без змін ==== */
 body {
   margin: 0;
   padding: 0;
@@ -132,15 +131,15 @@ button.main-btn {
 /* ==== Дії після свайпу ==== */
 .habit-actions {
   position: absolute;
+  right: 10px;
   top: 50%;
-  right: 15px;
   transform: translateY(-50%);
   display: flex;
-  gap: 10px;
-  z-index: 2;
+  flex-direction: column;
+  gap: 8px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
 }
 
 .habit-actions button {
@@ -152,6 +151,7 @@ button.main-btn {
   font-size: 14px;
   font-weight: 600;
   transition: all 0.2s ease;
+  width: 100px;
 }
 
 .habit-actions button:hover {
@@ -161,7 +161,7 @@ button.main-btn {
 
 /* Свайп активний */
 .habit-card-wrapper.show-actions .habit-card {
-  transform: translateX(-120px);
+  transform: translateX(-130px);
 }
 
 .habit-card-wrapper.show-actions .habit-actions {

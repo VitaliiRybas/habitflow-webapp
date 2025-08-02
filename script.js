@@ -95,6 +95,11 @@ function createHabitCard(habit) {
     <button class="delete-btn">Видалити</button>
   `;
 
+  // Стилі для вертикального розміщення
+  actions.style.display = 'flex';
+  actions.style.flexDirection = 'column';
+  actions.style.gap = '10px';
+
   wrapper.appendChild(card);
   wrapper.appendChild(actions);
 
