@@ -137,10 +137,10 @@ button.main-btn {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: transform 0.3s ease;
+  z-index: 2; /* щоб бути поверх swipe */
 }
+
 
 .habit-actions button {
   background-color: #292929;
@@ -165,9 +165,9 @@ button.main-btn {
 }
 
 .habit-card-wrapper.show-actions .habit-actions {
-  opacity: 1;
   pointer-events: auto;
 }
+
 
 /* Анімація (опціонально) */
 @keyframes fadeIn {

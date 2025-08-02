@@ -118,8 +118,11 @@ function createHabitCard(habit) {
     }
   });
 
-  actions.querySelector('.edit-btn').addEventListener('click', () => editHabit(habit.id, habit.title));
-  actions.querySelector('.delete-btn').addEventListener('click', () => deleteHabit(habit.id));
+setTimeout(() => {
+  actions.querySelector('.edit-btn')?.addEventListener('click', () => editHabit(habit.id, habit.title));
+  actions.querySelector('.delete-btn')?.addEventListener('click', () => deleteHabit(habit.id));
+}, 0);
+
 
   return wrapper;
 }
