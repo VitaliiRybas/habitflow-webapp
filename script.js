@@ -70,6 +70,7 @@ function createHabitCard(habit) {
   const container = document.createElement('div');
   container.className = 'streak-container';
 
+  // кружечки стріку
   streak.forEach((status, i) => {
     const circle = document.createElement('div');
     circle.className = 'streak-point';
@@ -77,17 +78,23 @@ function createHabitCard(habit) {
     if (status === 'done') circle.classList.add('done-today');
     if (status === 'missed') circle.classList.add('missed');
 
-if (i === streak.length - 1 && status !== 'done') {
-  circle.style.cursor = 'pointer';
-  circle.onclick = () => markTodayDone(habit.id, circle);
-}
-
+    // клікабельний ПЕРШИЙ кружечок
+    if (i === 0 && status !== 'done') {
+      circle.style.cursor = 'pointer';
+      circle.onclick = () => markTodayDone(habit.id, circle);
+    }
 
     container.appendChild(circle);
   });
 
+  // додати стрік
+  const streakText = document.createElement('div');
+  streakText.className = 'streak-text';
+  streakText.textContent = `Стрік: ${countStreak(streak)} дні(в)`;
+
   card.appendChild(title);
   card.appendChild(container);
+  card.appendChild(streakText);
 
   const actions = document.createElement('div');
   actions.className = 'habit-actions';
@@ -96,12 +103,10 @@ if (i === streak.length - 1 && status !== 'done') {
     <button class="delete-btn">Видалити</button>
   `;
 
-
-
   wrapper.appendChild(card);
   wrapper.appendChild(actions);
 
-  // Swipe logic
+  // Swipe логіка
   let startX = 0;
   card.addEventListener('touchstart', e => {
     startX = e.touches[0].clientX;
@@ -116,11 +121,10 @@ if (i === streak.length - 1 && status !== 'done') {
     }
   });
 
-setTimeout(() => {
-  actions.querySelector('.edit-btn')?.addEventListener('click', () => editHabit(habit.id, habit.title));
-  actions.querySelector('.delete-btn')?.addEventListener('click', () => deleteHabit(habit.id));
-}, 0);
-
+  setTimeout(() => {
+    actions.querySelector('.edit-btn')?.addEventListener('click', () => editHabit(habit.id, habit.title));
+    actions.querySelector('.delete-btn')?.addEventListener('click', () => deleteHabit(habit.id));
+  }, 0);
 
   return wrapper;
 }
@@ -143,6 +147,14 @@ async function markTodayDone(habitId, circle) {
   }
 }
 
+function countStreak(streak) {
+  let count = 0;
+  for (const day of streak) {
+    if (day === 'done') count++;
+    else break;
+  }
+  return count;
+}
 
 async function deleteHabit(habitId) {
   if (!confirm("Видалити цю звичку?")) return;
