@@ -134,12 +134,13 @@ button.main-btn {
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
   flex-direction: column;
   gap: 8px;
   transition: transform 0.3s ease;
-  z-index: 2; /* щоб бути поверх swipe */
+  z-index: 2;
+  display: none; /* <-- додано */
 }
+
 
 
 .habit-actions button {
@@ -165,9 +166,9 @@ button.main-btn {
 }
 
 .habit-card-wrapper.show-actions .habit-actions {
+  display: flex; /* <-- тепер тут воно включається */
   pointer-events: auto;
 }
-
 
 /* Анімація (опціонально) */
 @keyframes fadeIn {
