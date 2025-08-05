@@ -77,10 +77,11 @@ function createHabitCard(habit) {
     if (status === 'done') circle.classList.add('done-today');
     if (status === 'missed') circle.classList.add('missed');
 
-    if (i === streak.length - 1 && status !== 'done') {
-      circle.style.cursor = 'pointer';
-      circle.onclick = () => markTodayDone(habit.id);
-    }
+if (i === streak.length - 1 && status !== 'done') {
+  circle.style.cursor = 'pointer';
+  circle.onclick = () => markTodayDone(habit.id, circle);
+}
+
 
     container.appendChild(circle);
   });
@@ -124,18 +125,24 @@ setTimeout(() => {
   return wrapper;
 }
 
-async function markTodayDone(habitId) {
+async function markTodayDone(habitId, circle) {
   try {
+    // миттєва візуальна реакція
+    circle.classList.add('done-today');
+
     await fetch(`${apiUrl}/${habitId}/done`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId })
     });
+
+    // перезавантаження даних
     await loadHabits();
   } catch (err) {
     alert("Не вдалося оновити стрік");
   }
 }
+
 
 async function deleteHabit(habitId) {
   if (!confirm("Видалити цю звичку?")) return;
